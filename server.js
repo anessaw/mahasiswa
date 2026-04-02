@@ -67,6 +67,87 @@ app.delete('/api/mahasiswa/:id', (req, res) => {
     })
 })
 
+/// ================= DOSEN =================
+
+// GET
+app.get('/api/dosen', (req, res) => {
+    db.query('SELECT * FROM dosen', (err, result) => {
+        if (err) return res.status(500).json({ error: err.message })
+        res.json(result)
+    })
+})
+
+// POST
+app.post('/api/dosen', (req, res) => {
+    const { nama, nidn, prodi, fakultas } = req.body
+    const sql = 'INSERT INTO dosen (nama, nidn, prodi, fakultas) VALUES (?, ?, ?, ?)'
+    db.query(sql, [nama, nidn, prodi, fakultas], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message })
+        res.json({ message: 'Dosen berhasil ditambahkan' })
+    })
+})
+
+// PUT
+app.put('/api/dosen/:id', (req, res) => {
+    const { id } = req.params
+    const { nama, nidn, prodi, fakultas } = req.body
+
+    const sql = 'UPDATE dosen SET nama=?, nidn=?, prodi=?, fakultas=? WHERE id=?'
+    db.query(sql, [nama, nidn, prodi, fakultas, id], (err) => {
+        if (err) return res.status(500).json({ error: err.message })
+        res.json({ message: 'Dosen berhasil diupdate' })
+    })
+})
+
+// DELETE
+app.delete('/api/dosen/:id', (req, res) => {
+    db.query('DELETE FROM dosen WHERE id=?', [req.params.id], (err) => {
+        if (err) return res.status(500).json({ error: err.message })
+        res.json({ message: 'Dosen berhasil dihapus' })
+    })
+})
+
+
+/// ================= MATKUL =================
+
+// GET
+app.get('/api/matkul', (req, res) => {
+    db.query('SELECT * FROM matkul', (err, result) => {
+        if (err) return res.status(500).json({ error: err.message })
+        res.json(result)
+    })
+})
+
+// POST
+app.post('/api/matkul', (req, res) => {
+    const { nama, kode, sks, jadwal, jam } = req.body
+    const sql = 'INSERT INTO matkul (nama, kode, sks, jadwal, jam) VALUES (?, ?, ?, ?, ?)'
+    db.query(sql, [nama, kode, sks, jadwal, jam], (err) => {
+        if (err) return res.status(500).json({ error: err.message })
+        res.json({ message: 'Matkul berhasil ditambahkan' })
+    })
+})
+
+// PUT
+app.put('/api/matkul/:id', (req, res) => {
+    const { id } = req.params
+    const { nama, kode, sks, jadwal, jam } = req.body
+
+    const sql = 'UPDATE matkul SET nama=?, kode=?, sks=?, jadwal=?, jam=? WHERE id=?'
+    db.query(sql, [nama, kode, sks, jadwal, jam, id], (err) => {
+        if (err) return res.status(500).json({ error: err.message })
+        res.json({ message: 'Matkul berhasil diupdate' })
+    })
+})
+
+// DELETE
+app.delete('/api/matkul/:id', (req, res) => {
+    db.query('DELETE FROM matkul WHERE id=?', [req.params.id], (err) => {
+        if (err) return res.status(500).json({ error: err.message })
+        res.json({ message: 'Matkul berhasil dihapus' })
+    })
+})
+
 // Jalankan Server
 app.listen(PORT, () => {
     console.log(`Server API berjalan di http://localhost:${PORT}`)
